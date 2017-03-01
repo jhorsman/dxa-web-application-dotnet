@@ -25,6 +25,13 @@ namespace Sdl.Web.Mvc.Controllers
             {
                 try
                 {
+                    if (WebRequestContext.Localization == null)
+                    {
+                        //throw new Exception("Localization not set");
+                        Log.Error("Localization not set");
+                        return StaticNotFound();
+                    }
+
                     bool addIncludes = true;
                     object addIncludesViewData;
                     if (ViewData.TryGetValue(DxaViewDataItems.AddIncludes, out addIncludesViewData))
@@ -92,7 +99,7 @@ namespace Sdl.Web.Mvc.Controllers
         }
 
         /// <summary>
-        /// Render a file not found page
+        /// Render a dynamic file not found page from the CMS
         /// </summary>
         /// <returns>404 page or HttpException if there is none</returns>
         [FormatData]
@@ -122,7 +129,20 @@ namespace Sdl.Web.Mvc.Controllers
                 return View(model.MvcData.ViewName, model);
             }
         }
-        
+
+        /// <summary>
+        /// Render a static file not found page
+        /// </summary>
+        /// <returns>404 page</returns>
+        [FormatData]
+        public virtual ActionResult StaticNotFound()
+        {
+            using (new Tracer())
+            {
+                Response.StatusCode = 404;
+                return View("NotFound");
+            }
+        }
 
         public ActionResult ServerError()
         {
