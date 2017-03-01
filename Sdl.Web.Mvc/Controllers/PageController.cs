@@ -101,7 +101,7 @@ namespace Sdl.Web.Mvc.Controllers
         /// <summary>
         /// Render a dynamic file not found page from the CMS
         /// </summary>
-        /// <returns>404 page or HttpException if there is none</returns>
+        /// <returns>404 page or static 404 page is there is none</returns>
         [FormatData]
         public virtual ActionResult NotFound()
         {
@@ -117,7 +117,7 @@ namespace Sdl.Web.Mvc.Controllers
                 catch (DxaItemNotFoundException ex)
                 {
                     Log.Error(ex);
-                    throw new HttpException(404, ex.Message);
+                    return StaticNotFound();
                 }
 
                 SetupViewData(pageModel);
