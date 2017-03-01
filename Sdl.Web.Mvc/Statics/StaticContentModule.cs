@@ -52,6 +52,11 @@ namespace Sdl.Web.Mvc.Statics
                 try
                 {
                     localization = WebRequestContext.Localization;
+
+                    if (localization == null)
+                    {
+                        return;
+                    }
                 }
                 catch (DxaUnknownLocalizationException ex)
                 {
@@ -65,7 +70,7 @@ namespace Sdl.Web.Mvc.Statics
                     {
                         // There was no Unknown Localization Handler or it didn't terminate the request processing using response.End()
                         // and it also didn't resolve a Localization.
-                        SendNotFoundResponse(ex.Message, response);
+                        return;
                     }
                 }
                 catch (DxaItemNotFoundException  ex)
@@ -116,6 +121,11 @@ namespace Sdl.Web.Mvc.Statics
             using (new Tracer(sender, eventArgs, urlPath, ifModifiedSince))
             {
                 Localization localization = WebRequestContext.Localization;
+                if (localization == null)
+                {
+                    return;
+                }
+
                 string staticsRootUrl = SiteConfiguration.GetLocalStaticsUrl(localization.LocalizationId);
                 urlPath = urlPath.StartsWith("/" + staticsRootUrl) ? urlPath.Substring(staticsRootUrl.Length + 1) : urlPath;
                 if (!localization.IsStaticContentUrl(urlPath))

@@ -26,6 +26,11 @@ namespace Sdl.Web.Mvc.Html
         /// </remarks>
         public static string VersionedContent(this UrlHelper helper, string relativePath, string localization = "")
         {
+            if (WebRequestContext.Localization == null)
+            {
+                return null;
+            }
+
             string versionedUrlPath = WebRequestContext.Localization.GetVersionedUrlPath(relativePath);
             return helper.Content(versionedUrlPath);
         }
