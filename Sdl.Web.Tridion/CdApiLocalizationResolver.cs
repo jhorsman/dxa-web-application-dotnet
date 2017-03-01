@@ -68,7 +68,7 @@ namespace Sdl.Web.Tridion
                 }
                 if (mapping == null || mapping.Port != url.Port.ToString()) // See CRQ-1195
                 {
-                    throw new DxaUnknownLocalizationException(string.Format("No matching Localization found for URL '{0}'", urlLeftPart));
+                    return null;
                 }
 
                 Localization result;
